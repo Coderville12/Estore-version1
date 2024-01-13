@@ -27,5 +27,6 @@ public class Category {
 	private String discription;
 
 	private String coverImage;
+	private String subCategory;
 
 }
