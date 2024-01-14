@@ -21,6 +21,8 @@ user:
       image:
         path : images/users/
         
-        
-        
+category:
+     profile:      
+       image:
+          path: categoryImages/category/    
          
