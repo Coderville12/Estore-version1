@@ -1,10 +1,15 @@
 package com.gp.electro.store.service.impl;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.UUID;
 
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +34,9 @@ public class CategoryServiceImpl implements CategoryService {
 
 	@Autowired
 	private ModelMapper modelMapper;
+
+	@Value("${category.profile.image.path}")
+	private String imagePath;
 
 	@Override
 	public CategoryDto createCategory(CategoryDto categoryDto) {
@@ -56,9 +64,12 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public void deleteCategory(String categoryId) {
+	public void deleteCategory(String categoryId) throws IOException {
 		Category category = categoryRepo.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Cannot delete category with given ID not present"));
+		String fullPath = imagePath + category.getCoverImage();
+		Path path = Paths.get(fullPath);
+		Files.delete(path);
 		categoryRepo.delete(category);
 
 	}
