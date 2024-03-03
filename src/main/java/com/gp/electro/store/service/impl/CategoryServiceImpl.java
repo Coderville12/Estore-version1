@@ -71,6 +71,7 @@ public class CategoryServiceImpl implements CategoryService {
 		Path path = Paths.get(fullPath);
 		Files.delete(path);
 		categoryRepo.delete(category);
+		
 
 	}
 

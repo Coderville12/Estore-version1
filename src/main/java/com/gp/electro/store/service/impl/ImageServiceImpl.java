@@ -55,7 +55,8 @@ public class ImageServiceImpl implements ImageService {
 	@Override
 	public InputStream getImage(String path, String name) throws FileNotFoundException {
 
-		String imageLocationFullPath = path + File.separator + name;
+		//String imageLocationFullPath = path + File.separator + name;
+		String imageLocationFullPath = path + name;
 		InputStream inputStream = new FileInputStream(imageLocationFullPath);
 		return inputStream;
 
