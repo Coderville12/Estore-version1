@@ -58,9 +58,11 @@ public class CategoryServiceImpl implements CategoryService {
 		category.setDiscription(categoryDto.getDiscription());
 		category.setTitle(categoryDto.getTitle());
 		categoryRepo.save(category);
-		CategoryDto updateCategoryDto = modelMapper.map(category, CategoryDto.class);
+//		CategoryDto updateCategoryDto = modelMapper.map(category, CategoryDto.class);
+//
+//		return updateCategoryDto;
 
-		return updateCategoryDto;
+		return  modelMapper.map(category, CategoryDto.class);
 	}
 
 	@Override
@@ -71,7 +73,6 @@ public class CategoryServiceImpl implements CategoryService {
 		Path path = Paths.get(fullPath);
 		Files.delete(path);
 		categoryRepo.delete(category);
-		
 
 	}
 
