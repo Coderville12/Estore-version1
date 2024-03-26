@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.gp.electro.store.exceptions.BadRequest;
 import com.gp.electro.store.service.FileService;
+
 @Service
 public class FileServiceImpl implements FileService {
 
@@ -25,39 +26,38 @@ public class FileServiceImpl implements FileService {
 	public String uploadImage(MultipartFile file, String path) throws IOException {
 
 		String originalFileName = file.getOriginalFilename();
-		logger.info(originalFileName);
-		String extention = originalFileName.substring(originalFileName.lastIndexOf("."));
-		String randomeName = UUID.randomUUID().toString();
-		String fileNameWithExtention = randomeName + extention;
+		if (null != originalFileName) {
 
-		String fullPathWithFileName = path + File.separator + fileNameWithExtention;
-		if (extention.equalsIgnoreCase(".jpg") || extention.equalsIgnoreCase(".png")
-				|| extention.equalsIgnoreCase(".jpeg")) {
-			File folder = new File(path);
+			logger.info(originalFileName);
+			String extention = originalFileName.substring(originalFileName.lastIndexOf("."));
+			String randomeName = UUID.randomUUID().toString();
+			String fileNameWithExtention = randomeName + extention;
 
-			if (!folder.exists()) {
+			String fullPathWithFileName = path + File.separator + fileNameWithExtention;
+			if (extention.equalsIgnoreCase(".jpg") || extention.equalsIgnoreCase(".png")
+					|| extention.equalsIgnoreCase(".jpeg")) {
+				File folder = new File(path);
 
-				folder.mkdirs();
+				if (!folder.exists()) {
+
+					folder.mkdirs();
+				}
+
+				Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
+				return fileNameWithExtention;
 			}
-			
-			Files.copy(file.getInputStream(), Paths.get(fullPathWithFileName));
-			return fileNameWithExtention;
-
-		} else {
-			throw new BadRequest("Bad request... File with this extention not allowed!");
 		}
+		throw new BadRequest("Bad request... File with this extention not allowed!");
 
 	}
 
 	@Override
 	public InputStream getRersouce(String path, String name) throws FileNotFoundException {
-		
-		
-		String fullFileName = path +File.separator + name;
-		InputStream inputStream = new FileInputStream(fullFileName);
-		return inputStream;
-	
-		
+
+		String fullFileName = path + File.separator + name;
+
+		return new FileInputStream(fullFileName);
+
 	}
 
 }

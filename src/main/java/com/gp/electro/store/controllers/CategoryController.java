@@ -5,10 +5,10 @@ import java.io.InputStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.repository.query.Param;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.RequestEntity;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,7 +28,7 @@ import com.gp.electro.store.dtos.PageableResponse;
 
 import com.gp.electro.store.payload.ApiResponse;
 import com.gp.electro.store.service.CategoryService;
-import com.gp.electro.store.service.FileService;
+
 import com.gp.electro.store.service.ImageService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -42,9 +42,6 @@ public class CategoryController {
 
 	@Autowired
 	private ImageService imageService;
-
-	@Autowired
-	private FileService fileService;
 
 	@Value("${category.profile.image.path}")
 	private String imagePath;
@@ -68,7 +65,8 @@ public class CategoryController {
 
 	// delete
 	@DeleteMapping("/{categoryId}")
-	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("categoryId") String categoryId) throws IOException {
+	public ResponseEntity<ApiResponse> deleteCategory(@PathVariable("categoryId") String categoryId)
+			throws IOException {
 		categoryService.deleteCategory(categoryId);
 		ApiResponse apiResponse = ApiResponse.builder().message("Category with given is deleted successfully")
 				.status(true).httpStatus(HttpStatus.OK).build();
@@ -102,8 +100,8 @@ public class CategoryController {
 	public ResponseEntity<ImageResponse> uploadCategoryImage(@RequestParam("categoryImage") MultipartFile categoryImage,
 			@PathVariable("categoryId") String categoryId) throws IOException {
 
-	//String image = fileService.uploadImage(categoryImage, imagePath);
-	String image = imageService.uploadImage(categoryImage, imagePath);
+		// String image = fileService.uploadImage(categoryImage, imagePath);
+		String image = imageService.uploadImage(categoryImage, imagePath);
 		ImageResponse imageResponse = ImageResponse.builder().message("Image Uploaded successfully").status(true)
 				.imageName(image).build();
 
